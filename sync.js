@@ -108,6 +108,8 @@
                     if (dom.playlistSection) {
                         window.renderPlaylists(dom.playlistSection, allPlaylists);
                     }
+                    // Dispatch a custom event to notify other modules (like main.js) that data has been synced
+                    window.dispatchEvent(new CustomEvent('datasync'));
                 }
 
                 // Trigger archive page update if it's open
@@ -214,6 +216,8 @@
                 });
                 var dom = window.getDOMElements();
                 window.renderPlaylists(dom.playlistSection, allPlaylists);
+                // Dispatch a custom event to notify other modules that data has been initialized
+                window.dispatchEvent(new CustomEvent('datasync'));
 
                 if (playlistsToArchive.length > 0) {
                     return window.archivePlaylists(playlistsToArchive);

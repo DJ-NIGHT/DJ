@@ -35,6 +35,9 @@
         /* @tweakable The font weight for the alert/confirmation modal message text. */
         const modalMessageFontWeight = "bold";
 
+        /* @tweakable The duration in minutes for which the first playlist message is shown after creation. */
+        const firstPlaylistMessageDurationMinutes = 60;
+
         document.documentElement.style.setProperty('--modal-max-width', modalMaxWidth);
         document.documentElement.style.setProperty('--modal-title-font-size', modalTitleFontSize);
         document.documentElement.style.setProperty('--modal-message-font-size', modalMessageFontSize);
@@ -131,6 +134,27 @@
             window.updateDateAvailabilityMessage(!isBooked);
         }
 
+        /**
+         * Shows or hides the message that appears after the first playlist is created for a specific duration.
+         */
+        function updateFirstPlaylistMessageVisibility() {
+            const firstPlaylistMessage = document.getElementById('first-playlist-message');
+            if (firstPlaylistMessage) {
+                const creationTime = localStorage.getItem('firstPlaylistCreationTime');
+                if (!creationTime) {
+                    firstPlaylistMessage.classList.add('hidden');
+                    return;
+                }
+
+                const currentTime = new Date().getTime();
+                const timeElapsed = currentTime - parseInt(creationTime, 10);
+                const durationMs = firstPlaylistMessageDurationMinutes * 60 * 1000;
+
+                const shouldBeVisible = timeElapsed < durationMs;
+                firstPlaylistMessage.classList.toggle('hidden', !shouldBeVisible);
+            }
+        }
+
         if (dom.phoneNumberInput) {
             dom.phoneNumberInput.maxLength = phoneNumberLength;
             dom.phoneNumberInput.pattern = `[0-9]{${phoneNumberLength}}`;
@@ -169,6 +193,9 @@
         if (dom.playlistSection) {
             dom.playlistSection.addEventListener('click', window.handlePlaylistAction);
         }
+
+        // Add a listener to update the message visibility whenever data is synced
+        window.addEventListener('datasync', updateFirstPlaylistMessageVisibility);
 
         // --- Initial Load ---
         window.initializePage();

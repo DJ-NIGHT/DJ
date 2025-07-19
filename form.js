@@ -163,13 +163,22 @@
         }
     }
 
+    /* @tweakable The maximum number of songs allowed in a playlist. */
+    const maxSongs = 10;
+
     /* @tweakable Prevent adding a new song if the last input is empty. */
     const preventEmptySongOnAdd = true;
 
     function requestAddSongField() {
         const dom = window.getDOMElements();
+        const songInputs = dom.songsContainer.querySelectorAll('.song-input');
+        
+        if (songInputs.length >= maxSongs) {
+            window.showAlert('لا يمكن إضافة أكثر من ' + maxSongs + ' أغاني.');
+            return;
+        }
+
         if (preventEmptySongOnAdd) {
-            const songInputs = dom.songsContainer.querySelectorAll('.song-input');
             if (songInputs.length > 0) {
                 const lastSongInput = songInputs[songInputs.length - 1];
                 if (lastSongInput && lastSongInput.value.trim() === '') {
@@ -245,7 +254,11 @@
         songs.forEach(function(song) {
             addSongField(dom.songsContainer, false, song);
         });
-        addSongField(dom.songsContainer, true); // Add one empty field at the end
+
+        // Add one empty field at the end if not exceeding max songs
+        if (songs.length < maxSongs) {
+            addSongField(dom.songsContainer, true);
+        }
     }
 
     // Make functions globally accessible

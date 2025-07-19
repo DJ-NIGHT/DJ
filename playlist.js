@@ -39,7 +39,7 @@
         var playlistId = dom.playlistIdInput.value;
         var isEdit = playlistId && playlistId.trim() !== '';
 
-        // Check if this is the first playlist being added
+        // Check if this is the first playlist being added by this user
         const isFirstPlaylist = !isEdit && window.getAllPlaylists().length === 0;
 
         var playlistData = {
@@ -65,8 +65,12 @@
                     window.resetForm();
                     // Force immediate sync after save
                     return window.syncDataFromSheet().then(function() {
-                        if (isFirstPlaylist && window.triggerWelcomeConfetti) {
-                           window.triggerWelcomeConfetti();
+                        // After sync, check if it was the first playlist.
+                        if (isFirstPlaylist && window.getAllPlaylists().length > 0) {
+                           localStorage.setItem('firstPlaylistCreationTime', new Date().getTime());
+                           if (window.triggerWelcomeConfetti) {
+                              window.triggerWelcomeConfetti();
+                           }
                         }
                     });
                 } else {
