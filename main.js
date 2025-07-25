@@ -94,7 +94,7 @@
         var dom = window.getDOMElements();
 
         /**
-         * Checks if the selected date is already booked.
+         * Checks if the selected date is in the past or already booked.
          */
         function checkDateAvailability() {
             var selectedDateValue = dom.eventDateInput.value;
@@ -103,11 +103,22 @@
                 return;
             }
 
+            var selectedDate = new Date(selectedDateValue);
+            var today = new Date();
+            today.setHours(0, 0, 0, 0); // Set to start of today for comparison
+
+            // Create a date object that isn't affected by timezone for comparison
+            var selectedDateUTC = new Date(selectedDate.getUTCFullYear(), selectedDate.getUTCMonth(), selectedDate.getUTCDate());
+
+            if (selectedDateUTC < today) {
+                window.updateDateAvailabilityMessage('past');
+                return;
+            }
+            
             var allSheetData = window.getAllSheetData() || [];
             var editingId = dom.playlistIdInput.value;
             var isBooked = false;
             
-            var selectedDate = new Date(selectedDateValue);
             // Adjust for timezone to compare dates correctly
             selectedDate.setMinutes(selectedDate.getMinutes() + selectedDate.getTimezoneOffset());
             var selectedDateString = selectedDate.toISOString().split('T')[0];
@@ -171,6 +182,18 @@
             dom.eventDateInput.addEventListener('change', function() {
                 window.updateDayNameDisplay(window.getDOMElements().eventDateInput, window.getDOMElements().dayNameDisplay);
             });
+            
+            /* @tweakable The offset in days from today for the minimum selectable date. 0 makes today the earliest, -1 allows yesterday. */
+            const minDateOffset = 0;
+            const today = new Date();
+            today.setDate(today.getDate() + minDateOffset);
+            // Format date to YYYY-MM-DD for the min attribute
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const minDateString = `${yyyy}-${mm}-${dd}`;
+            
+            dom.eventDateInput.min = minDateString;
         }
 
         // --- Event Listeners ---

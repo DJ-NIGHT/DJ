@@ -46,7 +46,7 @@
 
     <div class="container">
         <header>
-            <h1><i class="fas fa-magic-wand-sparkles"></i> منسق الحفلات</h1>
+            <h1><img src="logo.png" alt="شعار منسق الحفلات" class="header-logo"><i class="fas fa-magic-wand-sparkles"></i> منسق الحفلات</h1>
             <p>أنشئ قوائم التشغيل والمناسبات الخاصة بك بكل سهولة</p>
             <div class="user-info">
                 <span id="current-user-display"></span>
@@ -78,11 +78,11 @@
                         <div id="date-availability-message" class="availability-message"></div>
                     </div>
                     <div class="form-group">
-                        <label for="eventLocation"><i class="fas fa-map-marker-alt icon"></i> مكان الحفل</label>
+                        <label for="eventLocation"><i class="fas fa-map-marker-alt icon"></i> أسم القاعة ، الإستراحة ،....</label>
                         <input type="text" id="eventLocation" required>
                     </div>
                     <div class="form-group">
-                        <label for="phoneNumber"><i class="fas fa-phone icon"></i> رقم الهاتف</label>
+                        <label for="phoneNumber"><i class="fas fa-phone icon"></i> رقم الهاتف لمتابعة الطلب</label>
                         <input type="tel" id="phoneNumber" required pattern="[0-9]{8}" maxlength="8" inputmode="tel" title="الرجاء إدخال 8 أرقام فقط">
                     </div>
                     <div class="form-group">
@@ -95,7 +95,7 @@
                     </div>
                     
                     <div class="songs-section">
-                        <h3><i class="fas fa-music icon"></i> قائمة الأغاني المطلوبة</h3>
+                        <h3><i class="fas fa-music icon"></i>الأغاني المطلوبة للسحب</h3>
                         <div id="songs-container">
                             <!-- Song input fields will be added here dynamically -->
                         </div>
@@ -133,15 +133,15 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <script src="config.js"></script>
-    <script src="modal.js"></script>
-    <script src="api.js"></script>
-    <script src="ui.js"></script>
-    <script src="form.js"></script>
-    <script src="view.js"></script>
-    <script src="sync.js"></script>
-    <script src="playlist.js"></script>
-    <script src="effects.js"></script>
-    <script src="main.js"></script>
+    <script src="config.js" defer></script>
+    <script src="modal.js" defer></script>
+    <script src="api.js" defer></script>
+    <script src="ui.js" defer></script>
+    <script src="form.js" defer></script>
+    <script src="view.js" defer></script>
+    <script src="sync.js" defer></script>
+    <script src="playlist.js" defer></script>
+    <script src="effects.js" defer></script>
+    <script src="main.js" defer></script>
 </body>
 </html>
